@@ -1,0 +1,54 @@
+spring:
+  threads:
+    virtual:
+      enabled: true
+  application:
+    name: eligibility-service
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/scpes_db?currentSchema=eligibility_svc}
+    username: ${DB_USERNAME:eligibility_svc_user}
+    password: ${DB_PASSWORD:scpes_secret}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+    properties:
+      hibernate:
+        default_schema: eligibility_svc
+  flyway:
+    enabled: true
+    schemas: eligibility_svc
+    default-schema: eligibility_svc
+  kafka:
+    bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    consumer:
+      group-id: eligibility-service
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+
+server:
+  port: 8085
+
+grpc:
+  server:
+    port: 9095
+
+student:
+  grpc:
+    host: ${STUDENT_GRPC_HOST:localhost}
+    port: ${STUDENT_GRPC_PORT:9093}
+
+jwt:
+  secret: ${JWT_SECRET:super-secret-key-scpes-2026-minimum-32-chars-long!}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html

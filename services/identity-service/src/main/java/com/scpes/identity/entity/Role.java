@@ -1,0 +1,35 @@
+package com.scpes.identity.entity;
+
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
+
+@Entity
+@Table(name = "roles")
+@Getter
+@Setter
+@NoArgsConstructor
+public class Role {
+    @Id
+    private UUID id = UUID.randomUUID();
+
+    @Column(unique = true, nullable = false)
+    private String name; // ADMIN, TPO, STUDENT, FACULTY, RECRUITER
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "role_permissions",
+            joinColumns = @JoinColumn(name = "role_id"),
+            inverseJoinColumns = @JoinColumn(name = "permission_id")
+    )
+    private Set<Permission> permissions = new HashSet<>();
+
+    public Role(String name) {
+        this.name = name;
+    }
+}

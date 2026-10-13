@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.scpes.proto.eligibility";
+
+service EligibilityQuery {
+  rpc EvaluateDrive (DriveRequest) returns (EligibleList);
+  rpc EvaluateJob (JobRequest) returns (EligibleList);
+  rpc CheckStudentEligibility (CheckRequest) returns (CheckReply);
+}
+
+message DriveRequest {
+  string drive_id = 1;
+}
+
+message JobRequest {
+  string job_id = 1;
+}
+
+message EligibleList {
+  repeated string eligible_student_ids = 1;
+  map<string, string> failure_reasons = 2;
+}
+
+message CheckRequest {
+  string drive_id = 1;
+  string student_id = 2;
+}
+
+message CheckReply {
+  bool eligible = 1;
+  repeated string reasons = 2;
+}

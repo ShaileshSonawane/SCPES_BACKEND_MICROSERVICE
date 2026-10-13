@@ -1,0 +1,43 @@
+spring:
+  threads:
+    virtual:
+      enabled: true
+  application:
+    name: identity-service
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/scpes_db?currentSchema=identity_svc}
+    username: ${DB_USERNAME:identity_svc_user}
+    password: ${DB_PASSWORD:scpes_secret}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+    properties:
+      hibernate:
+        default_schema: identity_svc
+  flyway:
+    enabled: true
+    schemas: identity_svc
+    default-schema: identity_svc
+
+server:
+  port: 8082
+
+grpc:
+  server:
+    port: 9092
+
+jwt:
+  secret: ${JWT_SECRET:super-secret-key-scpes-2026-minimum-32-chars-long!}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html

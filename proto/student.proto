@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.scpes.proto.student";
+
+service StudentQuery {
+  rpc GetVerifiedStudents (VerifiedStudentsRequest) returns (stream StudentSnapshotMsg);
+  rpc GetStudentSnapshot (StudentIdRequest) returns (StudentSnapshotMsg);
+}
+
+message VerifiedStudentsRequest {
+  int32 passout_year = 1;
+  repeated string branches = 2;
+}
+
+message StudentIdRequest {
+  string student_id = 1;
+}
+
+message StudentSnapshotMsg {
+  string student_id = 1;
+  string branch = 2;
+  int32 passout_year = 3;
+  double tenth_pct = 4;
+  double twelfth_pct = 5;
+  double cgpa = 6;
+  int32 active_backlogs = 7;
+  int32 backlog_history = 8;
+  int32 gap_years = 9;
+  repeated string skills = 10;
+  bool already_placed = 11;
+  double best_package_lpa = 12;
+}

@@ -1,0 +1,53 @@
+spring:
+  threads:
+    virtual:
+      enabled: true
+  application:
+    name: notification-service
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/scpes_db?currentSchema=notification_svc}
+    username: ${DB_USERNAME:notification_svc_user}
+    password: ${DB_PASSWORD:scpes_secret}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+    properties:
+      hibernate:
+        default_schema: notification_svc
+  flyway:
+    enabled: true
+    schemas: notification_svc
+    default-schema: notification_svc
+  kafka:
+    bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    consumer:
+      group-id: notification-service
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+
+server:
+  port: 8081
+
+grpc:
+  server:
+    port: 9091
+
+sendgrid:
+  api-key: ${SENDGRID_API_KEY:}
+  from-email: ${SENDGRID_FROM_EMAIL:placements@scpes.edu}
+
+jwt:
+  secret: ${JWT_SECRET:super-secret-key-scpes-2026-minimum-32-chars-long!}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html

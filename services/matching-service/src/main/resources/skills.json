@@ -1,0 +1,12 @@
+{
+  "javascript": ["javascript", "js", "ecmascript"],
+  "spring boot": ["spring boot", "springboot", "spring-boot"],
+  "java": ["java", "core java", "j2ee"],
+  "sql": ["sql", "mysql", "postgresql", "postgres", "sql server"],
+  "react": ["react", "reactjs", "react.js"],
+  "python": ["python", "python3"],
+  "docker": ["docker", "containerization"],
+  "c++": ["c++", "cpp"],
+  "kubernetes": ["kubernetes", "k8s"],
+  "aws": ["aws", "amazon web services"]
+}

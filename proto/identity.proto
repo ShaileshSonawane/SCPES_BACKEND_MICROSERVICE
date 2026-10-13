@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.scpes.proto.identity";
+
+service IdentityQuery {
+  rpc GetUserById (UserRequest) returns (UserResponse);
+  rpc ValidateToken (TokenRequest) returns (TokenValidationResponse);
+}
+
+message UserRequest {
+  string user_id = 1;
+}
+
+message UserResponse {
+  string user_id = 1;
+  string email = 2;
+  string role = 3;
+  string user_code = 4;
+}
+
+message TokenRequest {
+  string token = 1;
+}
+
+message TokenValidationResponse {
+  bool valid = 1;
+  string user_id = 2;
+  string email = 3;
+  string role = 4;
+}

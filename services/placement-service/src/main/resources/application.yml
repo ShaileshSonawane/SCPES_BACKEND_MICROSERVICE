@@ -1,0 +1,59 @@
+spring:
+  threads:
+    virtual:
+      enabled: true
+  application:
+    name: placement-service
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/scpes_db?currentSchema=placement_svc}
+    username: ${DB_USERNAME:placement_svc_user}
+    password: ${DB_PASSWORD:scpes_secret}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+    properties:
+      hibernate:
+        default_schema: placement_svc
+  flyway:
+    enabled: true
+    schemas: placement_svc
+    default-schema: placement_svc
+  kafka:
+    bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    consumer:
+      group-id: placement-service
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+
+server:
+  port: 8084
+
+grpc:
+  server:
+    port: 9094
+
+eligibility:
+  grpc:
+    host: ${ELIGIBILITY_GRPC_HOST:localhost}
+    port: ${ELIGIBILITY_GRPC_PORT:9095}
+
+matching:
+  grpc:
+    host: ${MATCHING_GRPC_HOST:localhost}
+    port: ${MATCHING_GRPC_PORT:9097}
+
+jwt:
+  secret: ${JWT_SECRET:super-secret-key-scpes-2026-minimum-32-chars-long!}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
