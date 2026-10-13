@@ -50,7 +50,7 @@
 | **`matching-service`** | `8087` | `9097` | `matching_svc` | Apache Tika parsing, skill extractor, TF-IDF cosine similarity |
 | **`notification-service`**| `8081` | `9091` | `notification_svc`| Kafka event consumer, in-app alerts, SendGrid email sender |
 | **`report-service`** | `8086` | — | `report_svc` | Read-model analytics, iText PDF export |
-| **`zat-common`** | — | — | — | Shared JWT filter, Error model, Protobuf contracts, Kafka envelope |
+| **`scpes-common`** | — | — | — | Shared JWT filter, Error model, Protobuf contracts, Kafka envelope |
 
 ---
 

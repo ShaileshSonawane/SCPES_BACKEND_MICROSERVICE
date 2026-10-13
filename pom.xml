@@ -17,7 +17,7 @@
     </parent>
 
     <modules>
-        <module>zat-common</module>
+        <module>scpes-common</module>
         <module>services/api-gateway</module>
         <module>services/identity-service</module>
         <module>services/student-service</module>
@@ -70,7 +70,7 @@
             </dependency>
             <dependency>
                 <groupId>com.scpes</groupId>
-                <artifactId>zat-common</artifactId>
+                <artifactId>scpes-common</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>

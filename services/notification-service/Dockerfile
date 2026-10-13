@@ -2,8 +2,8 @@ FROM maven:3.9.9-eclipse-temurin-21 AS build
 WORKDIR /workspace
 COPY pom.xml .
 COPY proto proto
-COPY zat-common/pom.xml zat-common/
-COPY zat-common/src zat-common/src
+COPY scpes-common/pom.xml scpes-common/
+COPY scpes-common/src scpes-common/src
 COPY services/notification-service/pom.xml services/notification-service/
 COPY services/notification-service/src services/notification-service/src
 RUN mvn -q -pl services/notification-service -am -DskipTests package
