@@ -23,7 +23,8 @@ public record StudentProfileResponse(
         int backlogHistory,
         int gapYears,
         String verificationStatus,
-        Set<String> skills
+        Set<String> skills,
+        String scpeId
 ) {
     public static StudentProfileResponse from(Student s) {
         AcademicRecord a = s.getAcademicRecord();
@@ -43,7 +44,8 @@ public record StudentProfileResponse(
                 a != null ? a.getBacklogHistory() : 0,
                 a != null ? a.getGapYears() : 0,
                 a != null ? a.getVerificationStatus().name() : "DRAFT",
-                s.getSkills()
+                s.getSkills(),
+                s.getScpeId()
         );
     }
 }

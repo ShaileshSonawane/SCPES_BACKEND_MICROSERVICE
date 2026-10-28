@@ -3,6 +3,7 @@ package com.scpes.report.entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 
 import java.util.UUID;
@@ -13,6 +14,9 @@ public class DriveStats {
     @Id
     @Column(name = "drive_id")
     private UUID driveId;
+
+    @Column(name = "scpe_id", length = 64)
+    private String scpeId;
 
     private String role;
 
@@ -39,12 +43,27 @@ public class DriveStats {
         this.totalSelected = totalSelected;
     }
 
+    @PrePersist
+    public void ensureScpeId() {
+        if (this.scpeId == null || this.scpeId.isBlank()) {
+            this.scpeId = "SCPE-DST-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
+        }
+    }
+
     public UUID getDriveId() {
         return driveId;
     }
 
     public void setDriveId(UUID driveId) {
         this.driveId = driveId;
+    }
+
+    public String getScpeId() {
+        return scpeId;
+    }
+
+    public void setScpeId(String scpeId) {
+        this.scpeId = scpeId;
     }
 
     public String getRole() {

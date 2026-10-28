@@ -42,7 +42,8 @@ public class ResumeService {
             Path uploadDir = Paths.get(System.getProperty("user.home"), ".scpes", "uploads", "resumes");
             Files.createDirectories(uploadDir);
 
-            String filename = student.getId() + "_" + System.currentTimeMillis() + "_" + file.getOriginalFilename();
+            UUID consistentStudentId = student.getUserId() != null ? student.getUserId() : student.getId();
+            String filename = consistentStudentId + "_" + System.currentTimeMillis() + "_" + file.getOriginalFilename();
             Path target = uploadDir.resolve(filename);
             Files.copy(file.getInputStream(), target, StandardCopyOption.REPLACE_EXISTING);
 
@@ -50,12 +51,12 @@ public class ResumeService {
             StudentDocument doc = new StudentDocument(student.getId(), "RESUME", fileUrl);
             documentRepository.save(doc);
 
-            log.info("Stored resume for student {}: {}", student.getId(), fileUrl);
+            log.info("Stored resume for student {}: {}", consistentStudentId, fileUrl);
 
             // Publish resume.updated event for matching-service
             try {
-                kafka.send("resume.updated", student.getId().toString(),
-                        EventEnvelope.of("ResumeUpdated", Map.of("studentId", student.getId(), "fileUrl", fileUrl)));
+                kafka.send("resume.updated", consistentStudentId.toString(),
+                        EventEnvelope.of("ResumeUpdated", Map.of("studentId", consistentStudentId, "fileUrl", fileUrl)));
             } catch (Exception e) {
                 log.warn("Kafka resume.updated publish failed: {}", e.getMessage());
             }

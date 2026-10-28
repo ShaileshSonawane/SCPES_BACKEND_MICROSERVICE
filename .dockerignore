@@ -1,0 +1,14 @@
+.git
+.idea
+.agents
+.gemini
+frontend/node_modules
+frontend/dist
+target
+**/target/classes
+**/target/generated-sources
+**/target/generated-test-sources
+**/target/test-classes
+**/target/maven-archiver
+**/target/maven-status
+*.log

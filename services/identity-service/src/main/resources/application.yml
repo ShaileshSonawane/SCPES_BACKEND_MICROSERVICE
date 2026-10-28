@@ -25,7 +25,7 @@ server:
 
 grpc:
   server:
-    port: 9092
+    port: 9098
 
 jwt:
   secret: ${JWT_SECRET:super-secret-key-scpes-2026-minimum-32-chars-long!}

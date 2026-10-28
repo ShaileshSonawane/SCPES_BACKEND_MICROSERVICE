@@ -15,7 +15,8 @@ public record DriveDto(
         LocalDate driveDate,
         LocalDate lastApplyDate,
         String status,
-        String category
+        String category,
+        String scpeId
 ) {
     public static DriveDto from(Drive d) {
         return new DriveDto(
@@ -27,7 +28,8 @@ public record DriveDto(
                 d.getDriveDate(),
                 d.getLastApplyDate(),
                 d.getStatus().name(),
-                d.getCategory()
+                d.getCategory(),
+                d.getScpeId()
         );
     }
 }

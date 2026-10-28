@@ -54,8 +54,11 @@ public class StudentQueryGrpcService extends StudentQueryGrpc.StudentQueryImplBa
     @Transactional(readOnly = true)
     public void getStudentSnapshot(StudentIdRequest req, StreamObserver<StudentSnapshotMsg> out) {
         try {
-            UUID studentId = UUID.fromString(req.getStudentId());
-            Optional<Student> opt = studentRepository.findById(studentId);
+            UUID id = UUID.fromString(req.getStudentId());
+            Optional<Student> opt = studentRepository.findById(id);
+            if (opt.isEmpty()) {
+                opt = studentRepository.findByUserId(id);
+            }
             if (opt.isPresent()) {
                 Student s = opt.get();
                 out.onNext(toProto(s, s.getAcademicRecord()));
@@ -70,8 +73,9 @@ public class StudentQueryGrpcService extends StudentQueryGrpc.StudentQueryImplBa
     }
 
     private StudentSnapshotMsg toProto(Student s, AcademicRecord a) {
+        String studentId = (s.getUserId() != null) ? s.getUserId().toString() : s.getId().toString();
         var builder = StudentSnapshotMsg.newBuilder()
-                .setStudentId(s.getId().toString())
+                .setStudentId(studentId)
                 .setBranch(s.getBranch() != null ? s.getBranch() : "")
                 .setPassoutYear(s.getPassoutYear())
                 .addAllSkills(s.getSkills());

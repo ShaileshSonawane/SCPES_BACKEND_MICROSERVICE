@@ -1,17 +1,8 @@
-FROM maven:3.9.9-eclipse-temurin-21 AS build
-WORKDIR /workspace
-COPY pom.xml .
-COPY proto proto
-COPY scpes-common/pom.xml scpes-common/
-COPY scpes-common/src scpes-common/src
-COPY services/student-service/pom.xml services/student-service/
-COPY services/student-service/src services/student-service/src
-RUN mvn -q -pl services/student-service -am -DskipTests package
-
-FROM eclipse-temurin:21-jre
-RUN addgroup --system app && adduser --system --ingroup app app
+FROM eclipse-temurin:21-jre-alpine
+RUN addgroup -S app && adduser -S app -G app
 USER app
 WORKDIR /app
-COPY --from=build /workspace/services/student-service/target/*.jar app.jar
+COPY services/student-service/target/student-service-1.0.0.jar app.jar
 EXPOSE 8083 9093
-ENTRYPOINT ["java", "-XX:+UseZGC", "-XX:+ZGenerational", "-XX:MaxRAMPercentage=75", "-jar", "app.jar"]
+ENV JAVA_OPTS="-XX:+UseSerialGC -Xms128m -Xmx256m -XX:+ExitOnOutOfMemoryError"
+ENTRYPOINT ["sh", "-c", "exec java $JAVA_OPTS -jar app.jar"]

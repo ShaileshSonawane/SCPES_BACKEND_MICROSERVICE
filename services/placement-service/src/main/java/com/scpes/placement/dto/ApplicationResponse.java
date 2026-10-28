@@ -12,7 +12,8 @@ public record ApplicationResponse(
         String role,
         UUID studentId,
         String status,
-        Instant appliedAt
+        Instant appliedAt,
+        String scpeId
 ) {
     public static ApplicationResponse from(Application a) {
         return new ApplicationResponse(
@@ -22,7 +23,8 @@ public record ApplicationResponse(
                 a.getDrive().getRole(),
                 a.getStudentId(),
                 a.getStatus().name(),
-                a.getAppliedAt()
+                a.getAppliedAt(),
+                a.getScpeId()
         );
     }
 }

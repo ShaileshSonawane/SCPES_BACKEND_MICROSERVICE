@@ -21,6 +21,9 @@ public class ResumeProfile {
     @Column(name = "student_id")
     private UUID studentId;
 
+    @Column(name = "scpe_id", length = 64)
+    private String scpeId;
+
     @Column(name = "file_url", nullable = false)
     private String fileUrl;
 
@@ -37,4 +40,11 @@ public class ResumeProfile {
 
     @Column(name = "updated_at")
     private Instant updatedAt = Instant.now();
+
+    @PrePersist
+    public void ensureScpeId() {
+        if (this.scpeId == null || this.scpeId.isBlank()) {
+            this.scpeId = "SCPE-RSM-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
+        }
+    }
 }

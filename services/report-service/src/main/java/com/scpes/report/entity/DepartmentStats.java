@@ -3,15 +3,20 @@ package com.scpes.report.entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 @Entity
 @Table(name = "department_stats")
 public class DepartmentStats {
     @EmbeddedId
     private DepartmentYearId id;
+
+    @Column(name = "scpe_id", length = 64)
+    private String scpeId;
 
     @Column(name = "placement_pct")
     private BigDecimal placementPct;
@@ -35,12 +40,27 @@ public class DepartmentStats {
         this.medianPackage = medianPackage;
     }
 
+    @PrePersist
+    public void ensureScpeId() {
+        if (this.scpeId == null || this.scpeId.isBlank()) {
+            this.scpeId = "SCPE-DEP-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
+        }
+    }
+
     public DepartmentYearId getId() {
         return id;
     }
 
     public void setId(DepartmentYearId id) {
         this.id = id;
+    }
+
+    public String getScpeId() {
+        return scpeId;
+    }
+
+    public void setScpeId(String scpeId) {
+        this.scpeId = scpeId;
     }
 
     public BigDecimal getPlacementPct() {

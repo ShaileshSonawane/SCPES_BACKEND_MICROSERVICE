@@ -19,14 +19,18 @@ public class JwtService {
     }
 
     public String generateAccessToken(UUID userId, String email, String role, Set<String> perms) {
-        return build(userId, email, role, perms, 3600); // 1 hour
+        return generateAccessToken(userId, email, role, perms, null);
+    }
+
+    public String generateAccessToken(UUID userId, String email, String role, Set<String> perms, String scpeId) {
+        return build(userId, email, role, perms, scpeId, 3600); // 1 hour
     }
 
     public String generateRefreshToken(UUID userId) {
-        return build(userId, null, null, Set.of(), 7 * 24 * 3600); // 7 days
+        return build(userId, null, null, Set.of(), null, 7 * 24 * 3600); // 7 days
     }
 
-    private String build(UUID id, String email, String role, Set<String> perms, long ttlSec) {
+    private String build(UUID id, String email, String role, Set<String> perms, String scpeId, long ttlSec) {
         Instant now = Instant.now();
         var builder = Jwts.builder()
                 .subject(id.toString())
@@ -36,6 +40,7 @@ public class JwtService {
         if (email != null) builder.claim("email", email);
         if (role != null) builder.claim("role", role);
         if (perms != null && !perms.isEmpty()) builder.claim("perms", perms);
+        if (scpeId != null) builder.claim("scpeId", scpeId);
 
         return builder.signWith(key).compact();
     }

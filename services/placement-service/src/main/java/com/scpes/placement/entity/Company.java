@@ -1,9 +1,6 @@
 package com.scpes.placement.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,6 +16,9 @@ import java.util.UUID;
 public class Company {
     @Id
     private UUID id = UUID.randomUUID();
+
+    @Column(name = "scpe_id", length = 64)
+    private String scpeId;
 
     @Column(nullable = false)
     private String name;
@@ -38,5 +38,12 @@ public class Company {
         this.sector = sector;
         this.website = website;
         this.description = description;
+    }
+
+    @PrePersist
+    public void ensureScpeId() {
+        if (this.scpeId == null || this.scpeId.isBlank()) {
+            this.scpeId = "SCPE-CMP-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
+        }
     }
 }

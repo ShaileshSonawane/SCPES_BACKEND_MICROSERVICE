@@ -1,6 +1,7 @@
 package com.scpes.identity.dto;
 
 import com.scpes.identity.entity.User;
+import com.scpes.identity.entity.UserStatus;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -10,8 +11,9 @@ public record UserDto(
         String userCode,
         String email,
         String role,
-        String status,
-        Instant createdAt
+        UserStatus status,
+        Instant createdAt,
+        String scpeId
 ) {
     public static UserDto from(User u) {
         return new UserDto(
@@ -19,8 +21,9 @@ public record UserDto(
                 u.getUserCode(),
                 u.getEmail(),
                 u.getRole().getName(),
-                u.getStatus().name(),
-                u.getCreatedAt()
+                u.getStatus(),
+                u.getCreatedAt(),
+                u.getScpeId()
         );
     }
 }

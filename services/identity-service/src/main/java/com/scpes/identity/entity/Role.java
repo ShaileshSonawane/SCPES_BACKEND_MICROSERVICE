@@ -18,6 +18,9 @@ public class Role {
     @Id
     private UUID id = UUID.randomUUID();
 
+    @Column(name = "scpe_id", length = 64)
+    private String scpeId;
+
     @Column(unique = true, nullable = false)
     private String name; // ADMIN, TPO, STUDENT, FACULTY, RECRUITER
 
@@ -31,5 +34,12 @@ public class Role {
 
     public Role(String name) {
         this.name = name;
+    }
+
+    @PrePersist
+    public void ensureScpeId() {
+        if (this.scpeId == null || this.scpeId.isBlank()) {
+            this.scpeId = "SCPE-ROL-" + (name != null ? name.toUpperCase() : UUID.randomUUID().toString().substring(0, 8).toUpperCase());
+        }
     }
 }

@@ -9,9 +9,10 @@ public record CompanyDto(
         String name,
         String sector,
         String website,
-        String description
+        String description,
+        String scpeId
 ) {
     public static CompanyDto from(Company c) {
-        return new CompanyDto(c.getId(), c.getName(), c.getSector(), c.getWebsite(), c.getDescription());
+        return new CompanyDto(c.getId(), c.getName(), c.getSector(), c.getWebsite(), c.getDescription(), c.getScpeId());
     }
 }

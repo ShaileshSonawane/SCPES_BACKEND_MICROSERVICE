@@ -19,6 +19,9 @@ public class AcademicRecord {
     @Column(name = "student_id")
     private UUID studentId;
 
+    @Column(name = "scpe_id", length = 64)
+    private String scpeId;
+
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId
     @JoinColumn(name = "student_id")
@@ -53,4 +56,11 @@ public class AcademicRecord {
 
     @Column(name = "updated_at")
     private Instant updatedAt = Instant.now();
+
+    @PrePersist
+    public void ensureScpeId() {
+        if (this.scpeId == null || this.scpeId.isBlank()) {
+            this.scpeId = "SCPE-ACR-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
+        }
+    }
 }

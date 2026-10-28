@@ -18,6 +18,9 @@ public class PlacementResult {
     @Id
     private UUID id = UUID.randomUUID();
 
+    @Column(name = "scpe_id", length = 64)
+    private String scpeId;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "application_id", nullable = false)
     private Application application;
@@ -32,4 +35,11 @@ public class PlacementResult {
 
     @Column(name = "created_at")
     private Instant createdAt = Instant.now();
+
+    @PrePersist
+    public void ensureScpeId() {
+        if (this.scpeId == null || this.scpeId.isBlank()) {
+            this.scpeId = "SCPE-RES-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
+        }
+    }
 }

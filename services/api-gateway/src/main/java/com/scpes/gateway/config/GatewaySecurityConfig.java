@@ -25,8 +25,7 @@ import java.util.List;
 public class GatewaySecurityConfig {
 
     private static final String[] PUBLIC = {
-            "/auth/login",
-            "/auth/refresh",
+            "/auth/**",
             "/companies/register",
             "/v3/api-docs/**",
             "/swagger-ui/**",

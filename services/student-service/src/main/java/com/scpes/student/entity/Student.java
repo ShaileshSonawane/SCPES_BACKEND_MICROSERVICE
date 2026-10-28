@@ -22,6 +22,9 @@ public class Student {
     @Column(name = "user_id", nullable = false, unique = true)
     private UUID userId;
 
+    @Column(name = "scpe_id", length = 64, unique = true)
+    private String scpeId;
+
     @Column(name = "roll_no", nullable = false, unique = true)
     private String rollNo;
 
@@ -51,4 +54,11 @@ public class Student {
 
     @Column(name = "updated_at")
     private Instant updatedAt = Instant.now();
+
+    @PrePersist
+    public void ensureScpeId() {
+        if (this.scpeId == null || this.scpeId.isBlank()) {
+            this.scpeId = "SCPE-STU-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
+        }
+    }
 }

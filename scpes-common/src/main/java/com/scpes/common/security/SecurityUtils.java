@@ -19,4 +19,8 @@ public final class SecurityUtils {
     public static UUID currentUserId() {
         return current().userId();
     }
+
+    public static String currentScpeId() {
+        return current().scpeId();
+    }
 }

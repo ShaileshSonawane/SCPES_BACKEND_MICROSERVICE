@@ -29,7 +29,7 @@ spring:
           - id: eligibility
             uri: ${ELIGIBILITY_SERVICE_URL:http://localhost:8085}
             predicates:
-              - Path=/drives/*/rules, /drives/*/evaluate, /drives/*/eligibility/**
+              - Path=/drives/*/rules, /drives/*/evaluate, /drives/*/eligibility, /drives/*/eligibility/**
 
           - id: placement
             uri: ${PLACEMENT_SERVICE_URL:http://localhost:8084}

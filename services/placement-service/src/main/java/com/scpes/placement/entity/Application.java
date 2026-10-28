@@ -19,6 +19,9 @@ public class Application {
     @Id
     private UUID id = UUID.randomUUID();
 
+    @Column(name = "scpe_id", length = 64)
+    private String scpeId;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "drive_id", nullable = false)
     private Drive drive;
@@ -40,6 +43,13 @@ public class Application {
         a.setStatus(ApplicationStatus.APPLIED);
         a.setAppliedAt(Instant.now());
         return a;
+    }
+
+    @PrePersist
+    public void ensureScpeId() {
+        if (this.scpeId == null || this.scpeId.isBlank()) {
+            this.scpeId = "SCPE-APP-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
+        }
     }
 
     public void transitionTo(ApplicationStatus next) {

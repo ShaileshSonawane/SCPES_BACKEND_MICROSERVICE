@@ -34,6 +34,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 Collection<String> perms = c.get("perms", Collection.class);
                 var authorities = new ArrayList<GrantedAuthority>();
                 String role = c.get("role", String.class);
+                String scpeId = c.get("scpeId", String.class);
                 if (role != null) {
                     authorities.add(new SimpleGrantedAuthority("ROLE_" + role));
                 }
@@ -45,7 +46,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                         UUID.fromString(c.getSubject()),
                         c.get("email", String.class),
                         role,
-                        perms == null ? Set.of() : new HashSet<>(perms)
+                        perms == null ? Set.of() : new HashSet<>(perms),
+                        scpeId
                 );
 
                 SecurityContextHolder.getContext().setAuthentication(

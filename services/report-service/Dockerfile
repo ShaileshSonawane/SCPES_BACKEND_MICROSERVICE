@@ -1,17 +1,9 @@
-FROM maven:3.9.9-eclipse-temurin-21 AS build
-WORKDIR /workspace
-COPY pom.xml .
-COPY proto proto
-COPY scpes-common/pom.xml scpes-common/
-COPY scpes-common/src scpes-common/src
-COPY services/report-service/pom.xml services/report-service/
-COPY services/report-service/src services/report-service/src
-RUN mvn -q -pl services/report-service -am -DskipTests package
-
-FROM eclipse-temurin:21-jre
-RUN addgroup --system app && adduser --system --ingroup app app
+FROM eclipse-temurin:21-jre-alpine
+RUN apk add --no-cache fontconfig freetype ttf-dejavu \
+    && addgroup -S app && adduser -S app -G app
 USER app
 WORKDIR /app
-COPY --from=build /workspace/services/report-service/target/*.jar app.jar
+COPY services/report-service/target/report-service-1.0.0.jar app.jar
 EXPOSE 8086
-ENTRYPOINT ["java", "-XX:+UseZGC", "-XX:+ZGenerational", "-XX:MaxRAMPercentage=75", "-jar", "app.jar"]
+ENV JAVA_OPTS="-XX:+UseSerialGC -Xms128m -Xmx256m -XX:+ExitOnOutOfMemoryError"
+ENTRYPOINT ["sh", "-c", "exec java $JAVA_OPTS -jar app.jar"]

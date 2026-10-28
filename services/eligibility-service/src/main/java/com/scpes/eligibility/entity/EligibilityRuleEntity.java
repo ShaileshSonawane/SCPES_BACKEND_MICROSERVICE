@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -17,9 +19,13 @@ public class EligibilityRuleEntity {
     @Id
     private UUID id = UUID.randomUUID();
 
+    @Column(name = "scpe_id", length = 64)
+    private String scpeId;
+
     @Column(name = "drive_id", nullable = false)
     private UUID driveId;
 
+    @JdbcTypeCode(SqlTypes.JSON)
     @Column(name = "rule_json", nullable = false, columnDefinition = "jsonb")
     private String ruleJson;
 
@@ -31,4 +37,11 @@ public class EligibilityRuleEntity {
 
     @Column(name = "created_at")
     private Instant createdAt = Instant.now();
+
+    @PrePersist
+    public void ensureScpeId() {
+        if (this.scpeId == null || this.scpeId.isBlank()) {
+            this.scpeId = "SCPE-RUL-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
+        }
+    }
 }

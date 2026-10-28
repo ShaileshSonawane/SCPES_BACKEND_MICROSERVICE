@@ -23,6 +23,9 @@ public class Drive {
     @Id
     private UUID id = UUID.randomUUID();
 
+    @Column(name = "scpe_id", length = 64)
+    private String scpeId;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "company_id", nullable = false)
     private Company company;
@@ -52,6 +55,13 @@ public class Drive {
 
     @Column(name = "updated_at")
     private Instant updatedAt = Instant.now();
+
+    @PrePersist
+    public void ensureScpeId() {
+        if (this.scpeId == null || this.scpeId.isBlank()) {
+            this.scpeId = "SCPE-DRV-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
+        }
+    }
 
     public void moveTo(DriveStatus next) {
         if (!this.status.canMoveTo(next)) {

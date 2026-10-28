@@ -18,6 +18,9 @@ public class DriveRound {
     @Id
     private UUID id = UUID.randomUUID();
 
+    @Column(name = "scpe_id", length = 64)
+    private String scpeId;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "drive_id", nullable = false)
     private Drive drive;
@@ -38,5 +41,12 @@ public class DriveRound {
         this.roundNo = roundNo;
         this.type = type;
         this.date = date;
+    }
+
+    @PrePersist
+    public void ensureScpeId() {
+        if (this.scpeId == null || this.scpeId.isBlank()) {
+            this.scpeId = "SCPE-RND-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
+        }
     }
 }

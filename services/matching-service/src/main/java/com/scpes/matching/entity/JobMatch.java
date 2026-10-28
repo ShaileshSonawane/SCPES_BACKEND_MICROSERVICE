@@ -8,6 +8,7 @@ import lombok.Setter;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @Table(name = "job_matches")
@@ -17,6 +18,9 @@ import java.util.Set;
 public class JobMatch {
     @EmbeddedId
     private JobMatchId id;
+
+    @Column(name = "scpe_id", length = 64)
+    private String scpeId;
 
     @Column(name = "match_score", nullable = false)
     private double matchScore;
@@ -49,5 +53,12 @@ public class JobMatch {
         this.missingSkills = missingSkills;
         this.forwardedAt = Instant.now();
         this.viewed = false;
+    }
+
+    @PrePersist
+    public void ensureScpeId() {
+        if (this.scpeId == null || this.scpeId.isBlank()) {
+            this.scpeId = "SCPE-MTC-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
+        }
     }
 }
